@@ -66,7 +66,7 @@ public final class MaterialsRegistry {
 		return StringUtils.capitalizeFully(material.toString().replace("_", " "));
 	}
 
-	public static Collection<Material> getExistingMaterials(String... materialEnumNames) {
+	private static Collection<Material> getExistingMaterials(String... materialEnumNames) {
 		Collection<Material> existingMaterials = new HashSet<Material>();
 
 		for (String materialEnumName : materialEnumNames) {
@@ -88,15 +88,11 @@ public final class MaterialsRegistry {
 		return SIGN_MATERIALS.contains(material);
 	}
 
-	public static boolean useNewMaterialNames() {
-		return USE_NEW_MATERIAL_NAMES;
-	}
-
 	static {
 		for (Material material : Material.values()) {
 			addMaterialAlias(material.toString(), material);
 
-			if (!useNewMaterialNames()) {
+			if (!USE_NEW_MATERIAL_NAMES) {
 				// Add numerical IDs in versions before 1.13
 				addMaterialAlias(String.valueOf(material.getId()), material);
 			}
