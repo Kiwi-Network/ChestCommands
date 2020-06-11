@@ -184,7 +184,7 @@ public class AdvancedIcon extends ConfigurableIconImpl {
 		if (requiredItems != null) {
 			boolean notHasItem = false;
 			for (RequiredItem item : requiredItems) {
-				if (!item.hasItem(player)) {
+				if (!item.isItemContainedIn(player.getInventory())) {
 					notHasItem = true;
 					player.sendMessage(ChestCommands.getLang().no_required_item
 							.replace("{material}", MaterialsHelper.formatMaterial(item.getMaterial()))
@@ -216,7 +216,7 @@ public class AdvancedIcon extends ConfigurableIconImpl {
 
 		if (requiredItems != null) {
 			for (RequiredItem item : requiredItems) {
-				item.takeItem(player);
+				item.takeItemFrom(player.getInventory());
 			}
 		}
 
