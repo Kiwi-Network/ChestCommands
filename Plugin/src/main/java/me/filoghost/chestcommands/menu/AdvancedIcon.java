@@ -14,18 +14,21 @@
  */
 package me.filoghost.chestcommands.menu;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
 import me.filoghost.chestcommands.ChestCommands;
 import me.filoghost.chestcommands.MenuManager;
 import me.filoghost.chestcommands.action.Action;
+import me.filoghost.chestcommands.action.GiveMoneyAction;
 import me.filoghost.chestcommands.action.OpenMenuAction;
 import me.filoghost.chestcommands.api.impl.ConfigurableIconImpl;
 import me.filoghost.chestcommands.bridge.EconomyBridge;
 import me.filoghost.chestcommands.util.MaterialsHelper;
 import me.filoghost.chestcommands.util.StringUtils;
-
-import java.util.List;
 
 public class AdvancedIcon extends ConfigurableIconImpl {
 
@@ -138,7 +141,7 @@ public class AdvancedIcon extends ConfigurableIconImpl {
 	}
 
 	@Override
-	public boolean onClick(Player player) {
+	public boolean onClick(Inventory inventory, Player player) {
 
 		// Check all the requirements
 
@@ -208,10 +211,6 @@ public class AdvancedIcon extends ConfigurableIconImpl {
 				item.takeItemFrom(player.getInventory());
 			}
 		}
-
-		if (changedVariables) {
-			MenuManager.refreshOpenMenu(player);
-		}
 		
 		boolean hasOpenMenuAction = false;
 		
@@ -221,9 +220,18 @@ public class AdvancedIcon extends ConfigurableIconImpl {
 				
 				if (action instanceof OpenMenuAction) {
 	                hasOpenMenuAction = true;
+	            } else if (action instanceof GiveMoneyAction) {
+	                changedVariables = true;
 	            }
 			}
 		}
+		
+		if (changedVariables) {
+            BaseIconMenu<?> menu = MenuManager.getOpenMenu(inventory);
+            if (menu instanceof AdvancedIconMenu) {
+                ((AdvancedIconMenu) menu).refresh(player, inventory);               
+            }
+        }
 		
 		// Force menu to stay open if actions open another menu
 		if (hasOpenMenuAction) {
