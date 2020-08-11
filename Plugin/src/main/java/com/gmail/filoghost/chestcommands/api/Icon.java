@@ -17,6 +17,7 @@ package com.gmail.filoghost.chestcommands.api;
 import com.gmail.filoghost.chestcommands.ChestCommands;
 import com.gmail.filoghost.chestcommands.internal.VariableManager;
 import com.gmail.filoghost.chestcommands.util.Utils;
+import ee.winni.plugins.languageslib.LLB;
 import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.enchantments.Enchantment;
@@ -297,11 +298,12 @@ public class Icon {
 		// Then apply data from config nodes, overwriting NBT data if there are confliting values
 		ItemMeta itemMeta = itemStack.getItemMeta();
 
+
 		if (hasName()) {
-			itemMeta.setDisplayName(calculateName(pov));
+			itemMeta.setDisplayName(ChestCommands.translate(pov.getName(),calculateName(pov)));
 		}
 		if (hasLore()) {
-			itemMeta.setLore(calculateLore(pov));
+			itemMeta.setLore(ChestCommands.translate(pov.getName(),calculateLore(pov)));
 		}
 
 		if (color != null && itemMeta instanceof LeatherArmorMeta) {

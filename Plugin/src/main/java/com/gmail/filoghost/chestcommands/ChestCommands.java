@@ -40,7 +40,8 @@ import com.gmail.filoghost.chestcommands.util.BukkitUtils;
 import com.gmail.filoghost.chestcommands.util.CaseInsensitiveMap;
 import com.gmail.filoghost.chestcommands.util.ErrorLogger;
 import com.gmail.filoghost.chestcommands.util.Utils;
-import org.bstats.bukkit.MetricsLite;
+import ee.winni.plugins.languageslib.LLBInterface;
+import me.confuser.barapi.mcstats.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -69,6 +70,23 @@ public class ChestCommands extends JavaPlugin {
 	private static int lastReloadErrors;
 	private static String newVersion;
 
+	public static LLBInterface l;
+
+	public static String translate(String player, String key){
+		if(key.equals(""))
+			return "";
+		if(key.replace(" ","").equals(""))
+			return key;
+		return l.getPlayerString(player,key);
+	}
+
+	public static List<String> translate(String player, List<String> keys){
+		for(int i=0;i<keys.size();i++){
+			keys.set(i,translate(player,keys.get(i)));
+		}
+		return keys;
+	}
+
 	@Override
 	public void onEnable() {
 		if (instance != null) {
@@ -77,6 +95,7 @@ public class ChestCommands extends JavaPlugin {
 		}
 
 		instance = this;
+		l = (LLBInterface) Bukkit.getPluginManager().getPlugin("LLB");
 		fileNameToMenuMap = CaseInsensitiveMap.create();
 		commandsToMenuMap = CaseInsensitiveMap.create();
 		boundItems = Utils.newHashSet();
@@ -117,7 +136,6 @@ public class ChestCommands extends JavaPlugin {
 		}
 
 		// Start bStats metrics
-		new MetricsLite(this);
 
 		Bukkit.getPluginManager().registerEvents(new CommandListener(), this);
 		Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);

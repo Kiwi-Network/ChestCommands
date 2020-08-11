@@ -77,7 +77,7 @@ public class ExtendedIconMenu extends IconMenu {
 				}
 			}
 
-			Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, title);
+			Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, ChestCommands.translate(player.getName(),title));
 
 			for (int i = 0; i < icons.length; i++) {
 				if (icons[i] != null) {
