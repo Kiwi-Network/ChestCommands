@@ -56,7 +56,6 @@ public class Icon {
 	private boolean nameHasVariables;
 	private boolean[] loreLinesWithVariables;
 	private boolean skullOwnerHasVariables;
-	private ItemStack cachedItem; // When there are no variables, we don't recreate the item
 
 	public Icon() {
 		enchantments = new HashMap<Enchantment, Integer>();
@@ -219,13 +218,15 @@ public class Icon {
 	}
 
 	protected String calculateName(Player pov) {
+
 		if (hasName()) {
 
-			String name = this.name;
+			String name = ChestCommands.translate(pov, this.name);
 
 			if (pov != null && nameHasVariables) {
 				name = VariableManager.setVariables(name, pov);
 			}
+
 
 			if (name.isEmpty()) {
 				// Add a color to display the name empty
@@ -233,9 +234,11 @@ public class Icon {
 			} else {
 				return name;
 			}
+
 		}
 
 		return null;
+
 	}
 
 	protected List<String> calculateLore(Player pov) {
@@ -248,7 +251,9 @@ public class Icon {
 
 			if (pov != null && loreLinesWithVariables != null) {
 				for (int i = 0; i < lore.size(); i++) {
-					String line = lore.get(i);
+
+					String line = ChestCommands.translate(pov,lore.get(i));
+
 					if (loreLinesWithVariables[i]) {
 						line = VariableManager.setVariables(line, pov);
 					}
@@ -256,7 +261,10 @@ public class Icon {
 				}
 			} else {
 				// Otherwise just copy the lines
-				output.addAll(lore);
+
+				for(String l:lore){
+					output.add(ChestCommands.translate(pov,l));
+				}
 			}
 		}
 
@@ -276,10 +284,8 @@ public class Icon {
 	@SuppressWarnings("deprecation")
 	public ItemStack createItemstack(Player pov) {
 
-		if (!this.hasVariables() && cachedItem != null) {
-			// Performance
-			return cachedItem;
-		}
+		if(pov==null)
+			return null;
 
 		// If the material is not set, display BEDROCK
 		ItemStack itemStack = (material != null) ? new ItemStack(material, amount, dataValue) : new ItemStack(Material.BEDROCK, amount);
@@ -300,10 +306,10 @@ public class Icon {
 
 
 		if (hasName()) {
-			itemMeta.setDisplayName(ChestCommands.translate(pov.getName(),calculateName(pov)));
+			itemMeta.setDisplayName(calculateName(pov));
 		}
 		if (hasLore()) {
-			itemMeta.setLore(ChestCommands.translate(pov.getName(),calculateLore(pov)));
+			itemMeta.setLore(calculateLore(pov));
 		}
 
 		if (color != null && itemMeta instanceof LeatherArmorMeta) {
@@ -332,11 +338,6 @@ public class Icon {
 			for (Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
 				itemStack.addUnsafeEnchantment(entry.getKey(), entry.getValue());
 			}
-		}
-
-		if (!this.hasVariables()) {
-			// If there are no variables, cache the item
-			cachedItem = itemStack;
 		}
 
 		return itemStack;

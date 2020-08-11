@@ -40,6 +40,7 @@ import com.gmail.filoghost.chestcommands.util.BukkitUtils;
 import com.gmail.filoghost.chestcommands.util.CaseInsensitiveMap;
 import com.gmail.filoghost.chestcommands.util.ErrorLogger;
 import com.gmail.filoghost.chestcommands.util.Utils;
+import ee.winni.plugins.languageslib.LLB;
 import ee.winni.plugins.languageslib.LLBInterface;
 import me.confuser.barapi.mcstats.MetricsLite;
 import org.bukkit.Bukkit;
@@ -53,6 +54,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChestCommands extends JavaPlugin {
 
@@ -70,21 +73,15 @@ public class ChestCommands extends JavaPlugin {
 	private static int lastReloadErrors;
 	private static String newVersion;
 
+	public static Logger logger;
 	public static LLBInterface l;
 
-	public static String translate(String player, String key){
-		if(key.equals(""))
-			return "";
-		if(key.replace(" ","").equals(""))
-			return key;
-		return l.getPlayerString(player,key);
-	}
+	public static final String translate(Player player, String key){
 
-	public static List<String> translate(String player, List<String> keys){
-		for(int i=0;i<keys.size();i++){
-			keys.set(i,translate(player,keys.get(i)));
-		}
-		return keys;
+		if(key.isEmpty())
+			return key;
+
+		return l.getPlayerString(player.getName(),key);
 	}
 
 	@Override
@@ -93,9 +90,11 @@ public class ChestCommands extends JavaPlugin {
 			getLogger().warning("Please do not use /reload or plugin reloaders. Do \"/cc reload\" instead.");
 			return;
 		}
+		logger = getLogger();
 
 		instance = this;
 		l = (LLBInterface) Bukkit.getPluginManager().getPlugin("LLB");
+
 		fileNameToMenuMap = CaseInsensitiveMap.create();
 		commandsToMenuMap = CaseInsensitiveMap.create();
 		boundItems = Utils.newHashSet();

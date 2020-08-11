@@ -1,0 +1,24 @@
+Menu:
+  title: "&4&l Murder Mystery"
+  join: "&e▶ Click to join"
+  random:
+    title: "&aRandom Map"
+    lore: "&e▶ Click to join randomly"
+  snowfall:
+    title: "&aSnowfall"
+    lore: "&7Player: &a%murdermystery_snowfall:players%/%murdermystery_snowfall:max_players%"
+  library:
+    title: "&aLibrary"
+    lore: "&7Player: &a%murdermystery_library:players%/%murdermystery_library:max_players%"
+  teleport:
+    title: "&aTeleport"
+    lore: "&7Player: &a%murdermystery_teleport:players%/%murdermystery_teleport:max_players%"
+  hypixelworld:
+    title: "&aHypixel World"
+    lore: "&7Player: &a%murdermystery_hypixelworld:players%/%murdermystery_hypixelworld:max_players%"
+  cruiseship:
+    title: "&aCruise Ship"
+    lore: "&7Player: &a%murdermystery_cruiseship:players%/%murdermystery_cruiseship:max_players%"
+  ancienttomb:
+    title: "&aAncient Tomb"
+    lore: "&7Player: &a%murdermystery_ancienttomb:players%/%murdermystery_ancienttomb:max_players%"

@@ -14,6 +14,7 @@
  */
 package com.gmail.filoghost.chestcommands.api;
 
+import com.gmail.filoghost.chestcommands.ChestCommands;
 import com.gmail.filoghost.chestcommands.internal.MenuInventoryHolder;
 import com.gmail.filoghost.chestcommands.util.ItemUtils;
 import com.gmail.filoghost.chestcommands.util.Utils;
@@ -88,7 +89,7 @@ public class IconMenu {
 	public void open(Player player) {
 		Validate.notNull(player, "Player cannot be null");
 
-		Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, title);
+		Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, ChestCommands.translate(player,title));
 
 		for (int i = 0; i < icons.length; i++) {
 			if (icons[i] != null) {

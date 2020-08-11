@@ -77,7 +77,7 @@ public class ExtendedIconMenu extends IconMenu {
 				}
 			}
 
-			Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, ChestCommands.translate(player.getName(),title));
+			Inventory inventory = Bukkit.createInventory(new MenuInventoryHolder(this), icons.length, ChestCommands.translate(player,title));
 
 			for (int i = 0; i < icons.length; i++) {
 				if (icons[i] != null) {
@@ -89,6 +89,7 @@ public class ExtendedIconMenu extends IconMenu {
 					inventory.setItem(i, ItemUtils.hideAttributes(icons[i].createItemstack(player)));
 				}
 			}
+
 
 			player.openInventory(inventory);
 		} catch (Exception e) {
